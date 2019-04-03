@@ -1,14 +1,27 @@
-import {createStackNavigator,createAppContainer} from 'react-navigation'
+import {createStackNavigator,createAppContainer,createSwitchNavigator} from 'react-navigation'
 import Login from './components/Login';
 import SignUp from './components/SignUp';
-import Home from './components/Home'
 import HomeDrawer from './HomeDrawer';
+import SplashScreen from './components/SplashScreen'
+import ShowPost from './components/ShowPost'
 const AppNavigator = createStackNavigator({
     Home:{screen:Login},
     SignUp:{screen:SignUp},
-    MainPage:{screen:HomeDrawer}
+   
 },{
-    initialRouteName:"Home"
+    initialRouteName:"Home",
 })
 
-export default createAppContainer(AppNavigator)
+const SwitchNav=createSwitchNavigator({
+    SplashScreen:SplashScreen,
+    SessionScreen:createAppContainer(AppNavigator),
+    showPostScreen:{screen:ShowPost},
+    MainPage:{
+        screen:HomeDrawer,
+        navigationOptions:{
+        header:null,
+    }}
+})
+
+
+export default createAppContainer(SwitchNav)

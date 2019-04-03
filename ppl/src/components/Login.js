@@ -2,7 +2,7 @@ import React ,{Component}from 'react'
 
 import {View,TextInput,StyleSheet,Button,TouchableNativeFeedback,Text,Alert,AsyncStorage,ToastAndroid} from 'react-native'
 import validate,{type} from "../helper/validator"
-import Axios from 'axios'
+import Axios from '../helper/Axios';
 const style = StyleSheet.create({
    
         inputStyle:{
@@ -81,20 +81,22 @@ class Login extends Component{
         return true;
     }
 
-    componentDidMount(){
-        if(AsyncStorage.getItem("token")){
+    
+    async componentDidMount(){
+        if(await AsyncStorage.getItem("token")){
            this.props.navigation.navigate("MainPage")
         }
     }
+
     loginNow=()=>{
         
         if(this.isEligibleToLogin()){
             //Alert.alert("Login Success","Successfully Login")
             creds={creds:this.state}
-            Axios.post("http://192.168.100.145:8080/account/login",creds)
+            Axios.post("/account/login",creds)
             .then(async result=>{
                 await AsyncStorage.setItem("token",result.data.token)
-                Alert.alert(`Hello ${result.data.token}`,"login Successful!!")
+               // Alert.alert(`Hello ${result.data.token}`, await AsyncStorage.getItem("token"))
                 this.props.navigation.navigate("MainPage")
             })
             .catch(err=>{

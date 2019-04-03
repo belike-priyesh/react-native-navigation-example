@@ -2,7 +2,7 @@ const EMAIL="EMAIL"
 const USERNAME="USERNAME"
 const PHONENUMBER="PHONENUMBER"
 const PIN_CODE="PIN_CODE"
-
+const IS_EMPTY="IS-EMPTY"
 const USERNAME_PATTERN = /^[a-zA-Z0-9]+([_ -]?[a-zA-Z0-9])*$/
 const PHONENUMBER_PATTERN = /[6-9]{1}[0-9]{9}/
 const PIN_CODE_PATTERN = /[0-9]{6}/
@@ -26,11 +26,14 @@ export default function validate(text,type){
         case PIN_CODE:{
             return PIN_CODE_PATTERN.test(text);
         }
-
+        case IS_EMPTY:{
+          
+            return !text || !text.trim()
+        }
         default: return false
     }
 }
 
 export const type={
-    USERNAME,EMAIL,PHONENUMBER,PIN_CODE
+    USERNAME,EMAIL,PHONENUMBER,PIN_CODE,IS_EMPTY
 }

@@ -54,30 +54,11 @@ public class NewImageDetectorModule extends ReactContextBaseJavaModule implement
 //        mReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
 //                .emit("newImageAvailable",writableMap);
 //    }
-     private void registerReciever(Callback callback){
-        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                Toast.makeText(context, "New Image Found", Toast.LENGTH_SHORT).show();
-                callback.invoke(1);
-            }
-        };
 
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("com.android.camera.NEW_PICTURE");
-        intentFilter.addAction("android.intent.action.MEDIA_SCANNER_SCAN_FILE");
-        intentFilter.addAction("android.hardware.action.NEW_PICTURE");
-        try {
-            intentFilter.addDataType("image/*");
-        } catch (IntentFilter.MalformedMimeTypeException e) {
-            e.printStackTrace();
-        }
-
-        context.registerReceiver(broadcastReceiver,intentFilter);
-    }
 
     @ReactMethod
     public void startNewImageDetector(Callback callback){
-        registerReciever(callback);
+        context.startService(new Intent(context,ImageDetectingForegroundService.class));
+        //registerReciever(callback);
     }
 }
